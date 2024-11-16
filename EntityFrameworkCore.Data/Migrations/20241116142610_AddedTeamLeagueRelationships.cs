@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EntityFrameworkCore.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class TeamLeagueRelationships : Migration
+    public partial class AddedTeamLeagueRelationships : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,12 +32,17 @@ namespace EntityFrameworkCore.Data.Migrations
                     table.PrimaryKey("PK_Leagues", x => x.Id);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Leagues",
+                columns: new[] { "Id", "CreatedDate", "Name" },
+                values: new object[] { 1, new DateTime(2024, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Best League" });
+
             migrationBuilder.UpdateData(
                 table: "Teams",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "LeagueId",
-                value: 0);
+                value: 1);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_LeagueId",

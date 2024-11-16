@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EntityFrameworkCore.Data.Migrations
 {
     [DbContext(typeof(FootballDbContext))]
-    [Migration("20241116140649_TeamLeagueRelationships")]
-    partial class TeamLeagueRelationships
+    [Migration("20241116142610_AddedTeamLeagueRelationships")]
+    partial class AddedTeamLeagueRelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,14 @@ namespace EntityFrameworkCore.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Leagues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2024, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Best League"
+                        });
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.Team", b =>
@@ -93,7 +101,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            LeagueId = 0,
+                            LeagueId = 1,
                             Name = "Test Team"
                         });
                 });
