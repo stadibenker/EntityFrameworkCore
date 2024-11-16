@@ -7,6 +7,7 @@ namespace EntityFrameworkCore.Data
 	{
 		public DbSet<Team> Teams { get; set; }
 		public DbSet<Coach> Coaches { get; set; }
+		public DbSet<League> Leagues { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
