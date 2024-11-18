@@ -24,6 +24,20 @@ namespace EntityFrameworkCore.Data
 			modelBuilder.Entity<League>().HasData(
 				new League { Id = 1, Name = "Best League", CreatedDate = new DateTime(2024, 11, 15) }
 			);
+
+			modelBuilder.Entity<Team>().HasIndex(x => x.Name).IsUnique();
+
+			modelBuilder.Entity<Team>().HasMany(x => x.HomeMatches)
+				.WithOne(x => x.HomeTeam)
+				.HasForeignKey(x => x.HomeTeamId)
+				.IsRequired()
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Team>().HasMany(x => x.AwayMatches)
+				.WithOne(x => x.AwayTeam)
+				.HasForeignKey(x => x.AwayTeamId)
+				.IsRequired()
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }
