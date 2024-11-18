@@ -116,22 +116,28 @@ namespace EntityFrameworkCore.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CoachId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LeagueId")
+                    b.Property<int?>("LeagueId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CoachId")
+                        .IsUnique();
+
                     b.HasIndex("LeagueId");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Teams");
 
@@ -139,6 +145,7 @@ namespace EntityFrameworkCore.Data.Migrations
                         new
                         {
                             Id = 1,
+                            CoachId = 0,
                             CreatedDate = new DateTime(2024, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LeagueId = 1,
                             Name = "Test Team"
@@ -166,13 +173,24 @@ namespace EntityFrameworkCore.Data.Migrations
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.Team", b =>
                 {
-                    b.HasOne("EntityFrameworkCore.Domain.League", "League")
-                        .WithMany("Teams")
-                        .HasForeignKey("LeagueId")
+                    b.HasOne("EntityFrameworkCore.Domain.Coach", "Coach")
+                        .WithOne("Team")
+                        .HasForeignKey("EntityFrameworkCore.Domain.Team", "CoachId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EntityFrameworkCore.Domain.League", "League")
+                        .WithMany("Teams")
+                        .HasForeignKey("LeagueId");
+
+                    b.Navigation("Coach");
+
                     b.Navigation("League");
+                });
+
+            modelBuilder.Entity("EntityFrameworkCore.Domain.Coach", b =>
+                {
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("EntityFrameworkCore.Domain.League", b =>
